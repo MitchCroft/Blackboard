@@ -223,21 +223,18 @@ namespace Utilities {
 		size_t key = mInstance->supportType<T>();
 
 		//Cast the Value Map to the type of T
-		if (Utilities::Templates::ValueMap<T>* map = (Utilities::Templates::ValueMap<T>*)(mInstance->mDataStorage[key])) {
-			//Copy the data value across
-			map->mValues[pKey] = pValue;
+		Utilities::Templates::ValueMap<T>* map = (Utilities::Templates::ValueMap<T>*)(mInstance->mDataStorage[key]);
 
-			//Check event flag
-			if (pRaiseCallbacks) {
-				//Check for events to raise
-				if (map->mKeyEvents.find(pKey) != map->mKeyEvents.end() && map->mKeyEvents[pKey]) map->mKeyEvents[pKey](pKey);
-				if (map->mValueEvents.find(pKey) != map->mValueEvents.end() && map->mValueEvents[pKey]) map->mValueEvents[pKey](map->mValues[pKey]);
-				if (map->mPairEvents.find(pKey) != map->mPairEvents.end() && map->mPairEvents[pKey]) map->mPairEvents[pKey](pKey, map->mValues[pKey]);
-			}
+		//Copy the data value across
+		map->mValues[pKey] = pValue;
+
+		//Check event flag
+		if (pRaiseCallbacks) {
+			//Check for events to raise
+			if (map->mKeyEvents.find(pKey) != map->mKeyEvents.end() && map->mKeyEvents[pKey]) map->mKeyEvents[pKey](pKey);
+			if (map->mValueEvents.find(pKey) != map->mValueEvents.end() && map->mValueEvents[pKey]) map->mValueEvents[pKey](map->mValues[pKey]);
+			if (map->mPairEvents.find(pKey) != map->mPairEvents.end() && map->mPairEvents[pKey]) map->mPairEvents[pKey](pKey, map->mValues[pKey]);
 		}
-
-		//Otherwise output an error
-		else throw std::runtime_error("An error occurred in the casting of the internal value map based on the ID of the templated type");
 	}
 
 	/*
@@ -264,11 +261,10 @@ namespace Utilities {
 		size_t key = mInstance->supportType<T>();
 
 		//Cast the Value Map to the type of T
-		if (Utilities::Templates::ValueMap<T>* map = (Utilities::Templates::ValueMap<T>*)(mInstance->mDataStorage[key]))
-			return map->mValues[pKey];
+		Utilities::Templates::ValueMap<T>* map = (Utilities::Templates::ValueMap<T>*)(mInstance->mDataStorage[key]);
 
-		//Otherwise output an error
-		else throw std::runtime_error("An error occurred in the casting of the internal value map based on the ID of the templated type");
+		//Return the value at the key location
+		return map->mValues[pKey];
 	}
 
 	/*
@@ -294,11 +290,10 @@ namespace Utilities {
 		size_t key = mInstance->supportType<T>();
 
 		//Cast the Value Map to the type of T
-		if (Utilities::Templates::ValueMap<T>* map = (Utilities::Templates::ValueMap<T>*)(mInstance->mDataStorage[key]))
-			map->mKeyEvents[pKey] = pCb;
+		Utilities::Templates::ValueMap<T>* map = (Utilities::Templates::ValueMap<T>*)(mInstance->mDataStorage[key]);
 
-		//Otherwise output an error
-		else throw std::runtime_error("An error occurred in the casting of the internal value map based on the ID of the templated type");
+		//Set the event callback
+		map->mKeyEvents[pKey] = pCb;
 	}
 
 	/*
@@ -325,11 +320,10 @@ namespace Utilities {
 		size_t key = mInstance->supportType<T>();
 
 		//Cast the Value Map to the type of T
-		if (Utilities::Templates::ValueMap<T>* map = (Utilities::Templates::ValueMap<T>*)(mInstance->mDataStorage[key]))
-			map->mValueEvents[pKey] = pCb;
+		Utilities::Templates::ValueMap<T>* map = (Utilities::Templates::ValueMap<T>*)(mInstance->mDataStorage[key]);
 
-		//Otherwise output an error
-		else throw std::runtime_error("An error occurred in the casting of the internal value map based on the ID of the templated type");
+		//Set the event callback
+		map->mValueEvents[pKey] = pCb;
 	}
 
 	/*
@@ -356,11 +350,10 @@ namespace Utilities {
 		size_t key = mInstance->supportType<T>();
 
 		//Cast the Value Map to the type of T
-		if (Utilities::Templates::ValueMap<T>* map = (Utilities::Templates::ValueMap<T>*)(mInstance->mDataStorage[key]))
-			map->mPairEvents[pKey] = pCb;
+		Utilities::Templates::ValueMap<T>* map = (Utilities::Templates::ValueMap<T>*)(mInstance->mDataStorage[key]);
 
-		//Otherwise output an error
-		else throw std::runtime_error("An error occurred in the casting of the internal value map based on the ID of the templated type");
+		//Set the event callback
+		map->mPairEvents[pKey] = pCb;
 	}
 
 	/*
@@ -384,11 +377,10 @@ namespace Utilities {
 		size_t key = mInstance->supportType<T>();
 
 		//Cast the Value Map to the type of T
-		if (Utilities::Templates::ValueMap<T>* map = (Utilities::Templates::ValueMap<T>*)(mInstance->mDataStorage[key]))
-			map->unsubscribe(pKey);
+		Utilities::Templates::ValueMap<T>* map = (Utilities::Templates::ValueMap<T>*)(mInstance->mDataStorage[key]);
 
-		//Otherwise output an error
-		else throw std::runtime_error("An error occurred in the casting of the internal value map based on the ID of the templated type");
+		//Pass the unsubscribe key to the Value Map
+		map->unsubscribe(pKey);
 	}
 	#pragma endregion
 
