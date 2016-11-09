@@ -19,7 +19,7 @@ namespace Utilities {
 	 *		Name: Blackboard 
 	 *		Author: Mitchell Croft
 	 *		Created: 08/11/2016
-	 *		Modified: 08/11/2016
+	 *		Modified: 09/11/2016
 	 *		
 	 *		Purpose:
 	 *		Provide a singleton location for a user to store
@@ -67,7 +67,7 @@ namespace Utilities {
 		//! Data reading/writing
 		template<typename T> static void write(const std::string& pKey, const T& pValue, bool pRaiseCallbacks = true);
 		template<typename T> static const T& read(const std::string& pKey);
-		template<typename T> static void wipeKey(const std::string& pKey);
+		template<typename T> static void wipeTypeKey(const std::string& pKey);
 		/*----------------*/ static void wipeKey(const std::string& pKey);
 		/*----------------*/ static void wipeBoard(bool pWipeCallbacks = false);
 
@@ -265,6 +265,32 @@ namespace Utilities {
 
 		//Return the value at the key location
 		return map->mValues[pKey];
+	}
+
+	/*
+		Blackboard : wipeTypeKey - Wipe the value stored at a specific key for the specified type
+		Author: Mitchell Croft
+		Created: 09/11/2016
+		Modified: 09/11/2016
+
+		param[in] pKey - A string object containing the key of the value(s) to remove
+	*/
+	template<typename T>
+	inline void Utilities::Blackboard::wipeTypeKey(const std::string& pKey) {
+		//Ensure that the singleton has been created
+		assert(mInstance);
+
+		//Lock the data
+		std::lock_guard<std::recursive_mutex> guard(mInstance->mDataLock);
+
+		//Ensure the key for this type is supported
+		size_t key = mInstance->supportType<T>();
+
+		//Cast the Value Map to the type of T
+		Utilities::Templates::ValueMap<T>* map = (Utilities::Templates::ValueMap<T>*)(mInstance->mDataStorage[key]);
+
+		//Wipe the key from the value map
+		map->wipeKey(pKey);
 	}
 
 	/*
